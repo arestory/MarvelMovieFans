@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+        <variable name="word" type="String"/>
+
+    </data>
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+              android:text="@{word}"
+              android:gravity="center"
+              android:padding="16dp"
+              android:id="@+id/tvKey"
+              android:textColor="@drawable/keyword_text_color_selector"
+              android:background="@drawable/keyword_selector"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content">
+
+    </TextView>
+
+</layout>

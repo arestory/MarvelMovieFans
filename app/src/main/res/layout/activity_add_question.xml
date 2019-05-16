@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <android.support.design.widget.AppBarLayout
+
+                app:layout_constraintTop_toTopOf="parent"
+                android:id="@+id/appbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+            <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    app:title="上传问题"
+                    android:background="@color/colorAccent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+        </android.support.design.widget.AppBarLayout>
+
+        <FrameLayout android:layout_width="match_parent"
+                     android:id="@+id/topLayout"
+                     app:layout_constraintDimensionRatio="w,9:16"
+                     app:layout_constraintTop_toBottomOf="@id/appbar"
+                     android:layout_height="0dp">
+
+            <TextView
+                    android:id="@+id/tvAddPhoto"
+                    android:layout_width="match_parent"
+                    android:text="点击添加图片"
+                    android:gravity="center"
+                    android:layout_height="match_parent"/>
+
+            <ImageView android:layout_width="match_parent"
+                       android:id="@+id/ivQuestion"
+                       android:visibility="gone"
+                       android:layout_height="match_parent"
+                       android:scaleType="centerCrop"
+                       app:layout_constraintDimensionRatio="w,9:16"
+                       android:contentDescription="this is photo"/>
+        </FrameLayout>
+
+
+        <android.support.design.widget.TextInputLayout
+                android:id="@+id/titleInputLayout"
+                app:layout_constraintTop_toBottomOf="@id/topLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <android.support.design.widget.TextInputEditText
+                    android:id="@+id/titleEt"
+                    android:hint="标题"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+                android:id="@+id/answerInputLayout"
+                app:layout_constraintTop_toBottomOf="@id/titleInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <android.support.design.widget.TextInputEditText
+                    android:id="@+id/answerEt"
+                    android:hint="答案"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+                android:id="@+id/keywordInputLayout"
+                app:layout_constraintTop_toBottomOf="@id/answerInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <android.support.design.widget.TextInputEditText
+                    android:id="@+id/keywordEt"
+                    android:hint="21个干扰关键字：必须包含答案！"
+                    android:maxLength="21"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+        </android.support.design.widget.TextInputLayout>
+
+
+        <android.support.design.widget.TextInputLayout
+                android:id="@+id/pointInputLayout"
+                app:layout_constraintTop_toBottomOf="@id/keywordInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <android.support.design.widget.TextInputEditText
+                    android:id="@+id/pointEt"
+                    android:hint="分数"
+                    android:inputType="number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <ProgressBar
+                android:id="@+id/pb"
+                app:layout_constraintTop_toBottomOf="@id/pointInputLayout"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:indeterminate="true"
+                android:visibility="gone"
+                android:layout_margin="10dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        <Button android:id="@+id/btnCommit"
+                app:layout_constraintTop_toBottomOf="@id/pb"
+                android:background="@drawable/global_ripple"
+                android:text="提交"
+                android:layout_marginEnd="8dp"
+                android:layout_gravity="end"
+                android:textColor="@color/white"
+                android:layout_width="100dp" android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"/>
+    </android.support.constraint.ConstraintLayout>
+</layout>

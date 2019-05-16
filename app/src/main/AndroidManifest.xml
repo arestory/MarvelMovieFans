@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+          package="arestory.com.marvelmoviefans">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+
+    <application
+            android:allowBackup="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/app_name"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:supportsRtl="true"
+            android:name=".MovieApp"
+            android:theme="@style/AppTheme"
+            android:usesCleartextTraffic="true">
+
+        <meta-data
+                android:name="com.google.android.gms.ads.APPLICATION_ID"
+                android:value="ca-app-pub-8884790662094305~5985336261"/>
+        <!-- 配置APP ID -->
+        <meta-data
+                android:name="BUGLY_APPID"
+                android:value="8d7193eaf2" />
+        <!-- 配置APP版本号 -->
+        <meta-data
+                android:name="BUGLY_APP_VERSION"
+                android:value="4ef50ad0-8a5f-4982-889c-e73e6445ab1e" />
+        <!-- 配置APP渠道号 -->
+        <meta-data
+                android:name="BUGLY_APP_CHANNEL"
+                android:value="qq" />
+        <!-- 配置Bugly调试模式（true或者false）-->
+        <meta-data
+                android:name="BUGLY_ENABLE_DEBUG"
+                android:value="true" />
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".activities.LevelQuestionActivity">
+
+
+        </activity>
+        <activity android:name="ywq.ares.funapp.activity.ShowImageActivity"/>
+        <activity android:name=".activities.UserLoginActivity">
+
+
+        </activity>
+        <activity android:name=".activities.AboutActivity"/>
+        <activity android:name=".activities.FeedbackActivity"/>
+        <activity android:name=".activities.SettingActivity"/>
+        <activity android:name=".activities.UserPointActivity"/>
+        <activity android:name=".activities.MyQuestionActivity"/>
+        <activity android:name=".activities.UserInfoActivity"/>
+        <activity android:name=".activities.AddQuestionActivity"/>
+        <activity android:name=".activities.AnswerQuestionActivity"/>
+        <activity android:name=".activities.QuestionDetailActivity"/>
+        <activity android:name=".activities.UserQuestionActivity"/>
+    </application>
+
+</manifest>

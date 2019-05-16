@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+
+    <data>
+
+        <variable name="keyword" type="String"/>
+    </data>
+
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:gravity="center"
+        android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <TextView
+            android:text="@{keyword}"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:background="@drawable/keyword_selector"
+            android:id="@+id/tvWord"
+            android:textSize="22sp"
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
+
+    </TextView>
+
+
+</LinearLayout>
+
+</layout>

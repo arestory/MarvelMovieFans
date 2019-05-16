@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="arestory.com.marvelmoviefans.adapter.NotAdminQuestionAdapter"/>
+
+        <variable name="questionAdapter" type="NotAdminQuestionAdapter"/>
+        <variable name="createUserId" type="String"/>
+        <import type="android.view.View"/>
+    </data>
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                 android:layout_width="match_parent"
+                                                 android:layout_height="match_parent">
+
+
+        <TextView
+                android:id="@+id/tvTitle"
+                android:background="@color/colorAccent"
+                android:text="问答圈"
+                android:textSize="20sp"
+                android:padding="10dp"
+                tools:text="问答圈"
+                android:visibility="@{createUserId==null?View.VISIBLE:View.GONE}"
+                android:textColor="@color/white"
+                android:gravity="center_vertical"
+                app:layout_constraintTop_toTopOf="parent" android:layout_width="match_parent" android:layout_height="60dp"/>
+
+        <com.ares.datacontentlayout.DataContentLayout
+
+                android:layout_marginTop="60dp"
+                android:id="@+id/dataContentLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                    app:layoutManager="android.support.v7.widget.GridLayoutManager"
+                    android:adapter="@{questionAdapter}"
+                    android:layout_width="match_parent"
+                    android:id="@+id/rvQuestion"
+                    android:layout_height="wrap_content"/>
+
+        </com.ares.datacontentlayout.DataContentLayout>
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>

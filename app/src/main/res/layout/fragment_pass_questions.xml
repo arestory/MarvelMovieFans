@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools">
+
+<data>
+    <import type="arestory.com.marvelmoviefans.adapter.LevelAdapter"/>
+
+    <variable name="levelAdapter" type="LevelAdapter"/>
+</data>
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                 android:layout_width="match_parent"
+                                                 android:layout_height="match_parent">
+
+
+        <TextView
+                android:id="@+id/tvTitle"
+                android:background="@color/colorAccent"
+                android:text="闯关问答"
+                android:textSize="20sp"
+                android:padding="10dp"
+                tools:text="这是标题"
+                android:textColor="@color/white"
+                android:gravity="center_vertical"
+                app:layout_constraintTop_toTopOf="parent" android:layout_width="match_parent" android:layout_height="60dp"/>
+
+        <com.ares.datacontentlayout.DataContentLayout
+                android:id="@+id/dataContentLayout"
+                android:layout_marginTop="60dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                    app:layoutManager="android.support.v7.widget.GridLayoutManager"
+                    android:adapter="@{levelAdapter}"
+                    android:layout_width="match_parent"
+                    android:id="@+id/rvLevel"
+                    android:layout_height="wrap_content"/>
+
+        </com.ares.datacontentlayout.DataContentLayout>
+
+    </android.support.constraint.ConstraintLayout>
+    
+</layout>

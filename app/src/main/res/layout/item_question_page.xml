@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+
+    <data>
+
+        <import type="arestory.com.marvelmoviefans.bean.QuestionPage"/>
+
+        <variable name="page" type="QuestionPage"/>
+    </data>
+
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                 android:layout_width="match_parent"
+                                                 android:layout_height="wrap_content"
+                                                 xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <Button
+                android:id="@+id/btnLevel"
+                app:layout_constraintTop_toTopOf="parent"
+                android:padding="10dp"
+                android:layout_width="60dp"
+                android:textColor="@drawable/keyword_text_color_selector"
+                android:text="@{String.valueOf(page.pageIndex)}"
+                android:background="@drawable/level_button_selector"
+                android:layout_height="60dp" app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp" app:layout_constraintBottom_toBottomOf="parent"/>
+    </android.support.constraint.ConstraintLayout>
+</layout>

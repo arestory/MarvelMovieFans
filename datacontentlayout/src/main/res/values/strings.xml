@@ -1,0 +1,4 @@
+<resources>
+     <string name="loading">loading</string>
+    <string name="retry" translatable="false">retry</string>
+</resources>

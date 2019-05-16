@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools">
+
+
+    <data>
+
+        <import type="arestory.com.marvelmoviefans.bean.QuestionEntity"/>
+        <variable name="question" type="QuestionEntity"/>
+    </data>
+
+
+    <android.support.constraint.ConstraintLayout
+            android:padding="10dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="@drawable/theme_btn_ripple"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+                                                 android:layout_width="match_parent"
+                                                 android:layout_height="match_parent">
+
+        <ImageView android:layout_width="match_parent"
+                   android:id="@+id/ivQuestion"
+                   android:layout_height="0dp"
+                   android:scaleType="centerCrop"
+                   app:layout_constraintTop_toTopOf="parent"
+                   app:layout_constraintDimensionRatio="w,9:16"
+                   android:contentDescription="this is photo"/>
+        <TextView
+                app:layout_constraintTop_toBottomOf="@id/ivQuestion"
+                android:id="@+id/tvTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="@{`标题：`+question.title}"
+                tools:text="标题：这是哪一部电影的场景？"
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        <TextView
+                app:layout_constraintTop_toBottomOf="@id/tvTitle"
+                android:id="@+id/tvAnswer"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="@{`答案：`+question.answer}"
+                tools:text="答案：神器"
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        <TextView
+                app:layout_constraintTop_toBottomOf="@id/tvAnswer"
+                android:id="@+id/tvAuth"
+                android:text="@{question.auth==1?`已审核通过`:`待审核`}"
+                tools:text="已审核通过"
+                android:textColor="@{question.auth==1?@color/red:@color/gray}"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">MarvelMovieFans</string>
+    <string name="bottom_bar_random">随机答题</string>
+    <string name="bottom_bar_pass">闯关问答</string>
+    <string name="bottom_bar_circle">问答圈</string>
+    <string name="bottom_bar_user">我</string>
+
+</resources>

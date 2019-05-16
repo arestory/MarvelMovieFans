@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        tools:ignore="HardcodedText">
+
+    <data>
+        <import type="android.view.View"/>
+
+        <import type="arestory.com.marvelmoviefans.bean.QuestionEntity"/>
+        <import type="arestory.com.marvelmoviefans.adapter.KeywordAdapter"/>
+        <import type="arestory.com.marvelmoviefans.adapter.AnswerWordAdapter"/>
+        <variable name="keywordAdapter" type="KeywordAdapter"/>
+        <variable name="answerAdapter" type="AnswerWordAdapter"/>
+        <variable name="question" type="QuestionEntity"/>
+        <variable name="imageVisible" type="boolean"/>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+                                                 android:layout_width="match_parent"
+                                                 android:layout_height="wrap_content">
+
+
+
+        <FrameLayout
+                android:id="@+id/topLayout"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintDimensionRatio="w,9:16"
+                android:layout_width="match_parent" android:layout_height="0dp">
+            <ImageView android:layout_width="match_parent"
+                       android:id="@+id/ivQuestion"
+                       android:visibility="@{imageVisible?View.VISIBLE:View.GONE}"
+                       android:layout_height="match_parent"
+                       android:scaleType="centerCrop"
+                       android:transitionName="coverImg"
+                       android:contentDescription="this is photo"/>
+            <FrameLayout
+                    android:visibility="gone"
+                    android:id="@+id/audioLayout"
+                    android:background="@color/gray"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <Button
+                        android:id="@+id/playBtn"
+                        android:visibility="gone"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/play_btn" />
+
+            </FrameLayout>
+
+        </FrameLayout>
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="80dp"
+                      android:id="@+id/wrapRvLayout"
+                      android:layout_marginStart="8dp"
+                      android:layout_marginEnd="8dp"
+                      android:gravity="center"
+                      android:layout_marginTop="10dp"
+                      app:layout_constraintTop_toBottomOf="@id/topLayout"
+                      app:layout_constraintEnd_toEndOf="parent"
+                      app:layout_constraintStart_toStartOf="parent"
+        >
+
+            <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rvAnswer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layoutManager="android.support.v7.widget.GridLayoutManager"
+                    android:adapter="@{answerAdapter}" />
+
+        </LinearLayout>
+
+
+        <android.support.v7.widget.RecyclerView android:layout_width="match_parent"
+                                                android:layout_height="wrap_content" android:id="@+id/rvKeywords"
+
+
+                                                android:adapter="@{keywordAdapter}"
+                                                app:layoutManager="android.support.v7.widget.GridLayoutManager"
+                                                android:layout_marginTop="10dp"
+                                                app:layout_constraintTop_toBottomOf="@+id/wrapRvLayout"
+                                                app:layout_constraintEnd_toEndOf="parent"
+                                                app:layout_constraintStart_toStartOf="parent"/>
+
+        <com.google.android.gms.ads.AdView
+                android:id="@+id/adView"
+                app:layout_constraintTop_toBottomOf="@id/rvKeywords"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_alignParentBottom="true" android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="8dp"
+                app:adSize="BANNER"
+                app:adUnitId="ca-app-pub-8884790662094305/9701219997"
+                app:layout_constraintStart_toStartOf="parent">
+        </com.google.android.gms.ads.AdView>
+    </android.support.constraint.ConstraintLayout>
+</layout>

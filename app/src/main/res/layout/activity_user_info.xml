@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View"/>
+        <import type="arestory.com.marvelmoviefans.bean.UserInfo"/>
+        <variable name="user" type="UserInfo"/>
+        <variable name="isLoginUser" type="Boolean"/>
+    </data>
+        <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <android.support.design.widget.AppBarLayout
+
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:id="@+id/appbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+                <android.support.v7.widget.Toolbar
+                        android:id="@+id/toolbar"
+                        app:title="个人信息"
+                        android:background="@color/colorAccent"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+            </android.support.design.widget.AppBarLayout>
+
+            <android.support.v4.widget.NestedScrollView
+                    android:layout_marginTop="60dp"
+                    app:layout_constraintTop_toBottomOf="@id/appbar"
+                    android:layout_width="match_parent"
+                                                        android:layout_height="match_parent">
+            <com.ares.datacontentlayout.DataContentLayout
+                    android:layout_width="match_parent"
+                    android:id="@+id/dataContentLayout"
+                                                          android:layout_height="match_parent">
+
+
+             <android.support.constraint.ConstraintLayout android:layout_width="match_parent"
+                                                          android:layout_height="wrap_content">
+
+                 <android.support.constraint.ConstraintLayout
+                         android:id="@+id/layoutAvatar"
+                        app:layout_constraintTop_toTopOf="parent"
+                         android:layout_width="match_parent"
+                         android:background="@drawable/theme_btn_ripple"
+
+                         android:layout_height="80dp">
+
+                     <TextView android:layout_width="wrap_content"
+                               android:text="头像"
+                               app:layout_constraintStart_toStartOf="parent"
+                               android:layout_height="wrap_content" app:layout_constraintBottom_toBottomOf="parent"
+                               android:layout_marginStart="8dp" app:layout_constraintTop_toTopOf="parent"/>
+
+                     <ImageView
+                             android:id="@+id/ivAvatar"
+                             app:layout_constraintEnd_toEndOf="parent"
+                             android:layout_width="60dp" android:layout_height="60dp"
+                             app:layout_constraintBottom_toBottomOf="parent"
+                             android:layout_marginEnd="30dp"
+                             android:transitionName="avatar"
+                             app:layout_constraintTop_toTopOf="parent"/>
+                     <ImageView
+
+                             app:layout_constraintStart_toEndOf="@id/ivAvatar"
+                             android:background="@drawable/ic_keyboard_arrow_right"
+                             android:layout_width="24dp"
+                             android:layout_height="24dp"
+                             android:visibility="@{isLoginUser?View.VISIBLE:View.GONE}"
+
+                             app:layout_constraintBottom_toBottomOf="parent"
+                             app:layout_constraintTop_toTopOf="parent"/>
+                     <View android:layout_width="match_parent" android:layout_height="0.5dp"
+                           android:layout_marginStart="5dp"
+                           android:layout_marginEnd="5dp"
+                           android:background="@color/gray"
+                           app:layout_constraintBottom_toBottomOf="parent"
+                     />
+                 </android.support.constraint.ConstraintLayout>
+
+                 <android.support.constraint.ConstraintLayout
+                         android:id="@+id/layoutNickName"
+                         android:background="@drawable/theme_btn_ripple"
+
+                         app:layout_constraintTop_toBottomOf="@id/layoutAvatar"
+                         android:layout_width="match_parent"
+                         android:layout_height="80dp">
+
+                     <TextView android:layout_width="wrap_content"
+                               android:text="昵称"
+                               app:layout_constraintStart_toStartOf="parent"
+                               android:layout_height="wrap_content" app:layout_constraintBottom_toBottomOf="parent"
+                               android:layout_marginStart="8dp" app:layout_constraintTop_toTopOf="parent"/>
+                     <TextView
+                             android:id="@+id/tvNickName"
+                             app:layout_constraintEnd_toEndOf="parent"
+                             android:layout_width="match_parent" android:layout_height="wrap_content"
+                             app:layout_constraintBottom_toBottomOf="parent"
+                             android:layout_marginEnd="30dp"
+                             android:text="@{user.nickName}"
+                             android:gravity="end|center_vertical"
+                             app:layout_constraintTop_toTopOf="parent"/>
+                     <ImageView
+                             app:layout_constraintStart_toEndOf="@id/tvNickName"
+                             android:background="@drawable/ic_keyboard_arrow_right"
+                             android:layout_width="24dp"
+                             android:layout_height="24dp"
+                             android:visibility="@{isLoginUser?View.VISIBLE:View.GONE}"
+
+                             app:layout_constraintBottom_toBottomOf="parent"
+                             app:layout_constraintTop_toTopOf="parent"/>
+                     <View android:layout_width="match_parent" android:layout_height="0.5dp"
+                           android:layout_marginStart="5dp"
+                           android:layout_marginEnd="5dp"
+                           android:background="@color/gray"
+                           app:layout_constraintBottom_toBottomOf="parent"
+                     />
+                 </android.support.constraint.ConstraintLayout>
+
+                 <android.support.constraint.ConstraintLayout
+                         android:id="@+id/layoutSex"
+                         app:layout_constraintTop_toBottomOf="@id/layoutNickName"
+                         android:layout_width="match_parent"
+                         android:background="@drawable/theme_btn_ripple"
+
+                         android:layout_height="80dp">
+
+                     <TextView android:layout_width="wrap_content"
+                               android:text="族群"
+                               app:layout_constraintStart_toStartOf="parent"
+                               android:layout_height="wrap_content" app:layout_constraintBottom_toBottomOf="parent"
+                               android:layout_marginStart="8dp" app:layout_constraintTop_toTopOf="parent"/>
+                     <TextView
+                             android:id="@+id/tvSex"
+                             app:layout_constraintEnd_toEndOf="parent"
+                             android:gravity="end|center_vertical"
+                             android:layout_width="match_parent" android:layout_height="60dp"
+                             app:layout_constraintBottom_toBottomOf="parent"
+                             android:layout_marginEnd="30dp"
+                             android:text="@{user.sex}"
+                             app:layout_constraintTop_toTopOf="parent"/>
+                     <ImageView
+                             app:layout_constraintStart_toEndOf="@id/tvSex"
+                             android:background="@drawable/ic_keyboard_arrow_right"
+                             android:layout_width="24dp"
+                             android:layout_height="24dp"
+                             android:visibility="@{isLoginUser?View.VISIBLE:View.GONE}"
+
+                             app:layout_constraintBottom_toBottomOf="parent"
+                             app:layout_constraintTop_toTopOf="parent"/>
+                     <View android:layout_width="match_parent" android:layout_height="0.5dp"
+                           android:layout_marginStart="5dp"
+                           android:layout_marginEnd="5dp"
+                           android:background="@color/gray"
+                           app:layout_constraintBottom_toBottomOf="parent"
+                     />
+                 </android.support.constraint.ConstraintLayout>
+
+                 <android.support.constraint.ConstraintLayout
+                         android:id="@+id/layoutAge"
+                         app:layout_constraintTop_toBottomOf="@id/layoutSex"
+                         android:layout_width="match_parent"
+                         android:background="@drawable/theme_btn_ripple"
+
+                         android:layout_height="80dp">
+
+                     <TextView android:layout_width="wrap_content"
+                               android:text="年龄"
+                               app:layout_constraintStart_toStartOf="parent"
+                               android:layout_height="wrap_content" app:layout_constraintBottom_toBottomOf="parent"
+                               android:layout_marginStart="8dp" app:layout_constraintTop_toTopOf="parent"/>
+                     <TextView
+                             android:id="@+id/tvAge"
+                             android:gravity="end|center_vertical"
+                             app:layout_constraintEnd_toEndOf="parent"
+                             android:layout_width="match_parent" android:layout_height="wrap_content"
+                             app:layout_constraintBottom_toBottomOf="parent"
+
+                             android:layout_marginEnd="30dp"
+                             android:text="@{String.valueOf(user.age)}"
+                             app:layout_constraintTop_toTopOf="parent"/>
+                     <ImageView
+                             app:layout_constraintStart_toEndOf="@id/tvAge"
+                             android:background="@drawable/ic_keyboard_arrow_right"
+                             android:layout_width="24dp"
+                             android:layout_height="24dp"
+                             android:visibility="@{isLoginUser?View.VISIBLE:View.GONE}"
+
+                             app:layout_constraintBottom_toBottomOf="parent"
+                             app:layout_constraintTop_toTopOf="parent"/>
+                     <View android:layout_width="match_parent" android:layout_height="0.5dp"
+                           android:layout_marginStart="5dp"
+                           android:layout_marginEnd="5dp"
+                           android:background="@color/gray"
+                           app:layout_constraintBottom_toBottomOf="parent"
+                     />
+                 </android.support.constraint.ConstraintLayout>
+                 <android.support.constraint.ConstraintLayout
+                         android:id="@+id/layoutSlogan"
+                         app:layout_constraintTop_toBottomOf="@id/layoutAge"
+                         android:layout_width="match_parent" android:background="@drawable/theme_btn_ripple"
+
+                         android:layout_height="80dp">
+
+                     <TextView android:layout_width="wrap_content"
+                               android:text="个性签名"
+                               app:layout_constraintStart_toStartOf="parent"
+                               android:layout_height="wrap_content" app:layout_constraintBottom_toBottomOf="parent"
+                               android:layout_marginStart="8dp" app:layout_constraintTop_toTopOf="parent"/>
+                     <TextView
+                             android:id="@+id/tvSlogan"
+                             app:layout_constraintEnd_toEndOf="parent"
+                             android:layout_width="match_parent" android:layout_height="wrap_content"
+                             app:layout_constraintBottom_toBottomOf="parent"
+                             android:layout_marginEnd="30dp"
+                             android:gravity="end|center_vertical"
+
+                             android:text="@{user.slogan}"
+                             app:layout_constraintTop_toTopOf="parent"/>
+                     <ImageView
+                             app:layout_constraintStart_toEndOf="@id/tvSlogan"
+                             android:background="@drawable/ic_keyboard_arrow_right"
+                             android:layout_width="24dp"
+                             android:layout_height="24dp"
+                             android:visibility="@{isLoginUser?View.VISIBLE:View.GONE}"
+                             app:layout_constraintBottom_toBottomOf="parent"
+                             app:layout_constraintTop_toTopOf="parent"/>
+                     <View android:layout_width="match_parent" android:layout_height="0.5dp"
+                           android:layout_marginStart="5dp"
+                           android:layout_marginEnd="5dp"
+                           android:background="@color/gray"
+                           app:layout_constraintBottom_toBottomOf="parent"
+                     />
+                 </android.support.constraint.ConstraintLayout>
+
+                 <android.support.constraint.ConstraintLayout
+                         android:id="@+id/layoutExit"
+                         app:layout_constraintTop_toBottomOf="@id/layoutSlogan"
+                         android:layout_width="match_parent" android:background="@drawable/theme_btn_ripple"
+                         android:visibility="@{isLoginUser?View.VISIBLE:View.GONE}"
+                         android:layout_height="80dp">
+
+                     <TextView android:layout_width="wrap_content"
+                               android:text="退出当前用户"
+                               app:layout_constraintStart_toStartOf="parent"
+                               android:layout_height="wrap_content" app:layout_constraintBottom_toBottomOf="parent"
+                               android:layout_marginStart="8dp" app:layout_constraintTop_toTopOf="parent"/>
+
+
+                     <View android:layout_width="match_parent" android:layout_height="0.5dp"
+                           android:layout_marginStart="5dp"
+                           android:layout_marginEnd="5dp"
+                           android:background="@color/gray"
+                           app:layout_constraintBottom_toBottomOf="parent"
+                     />
+                 </android.support.constraint.ConstraintLayout>
+
+
+                 <android.support.constraint.ConstraintLayout
+                         android:id="@+id/layoutQuestion"
+                         app:layout_constraintTop_toBottomOf="@id/layoutExit"
+                         android:layout_width="match_parent" android:background="@drawable/theme_btn_ripple"
+                         android:visibility="@{isLoginUser?View.GONE:View.VISIBLE}"
+                         android:layout_height="80dp">
+
+                     <TextView android:layout_width="wrap_content"
+                               android:text="他/她提交的问题"
+                               app:layout_constraintStart_toStartOf="parent"
+                               android:layout_height="wrap_content" app:layout_constraintBottom_toBottomOf="parent"
+                               android:layout_marginStart="8dp" app:layout_constraintTop_toTopOf="parent"/>
+
+                     <ImageView
+                             app:layout_constraintEnd_toEndOf="parent"
+                             android:background="@drawable/ic_keyboard_arrow_right"
+                             android:layout_width="24dp"
+                             android:layout_height="24dp"
+                             app:layout_constraintBottom_toBottomOf="parent"
+                             app:layout_constraintTop_toTopOf="parent"/>
+                     <View android:layout_width="match_parent" android:layout_height="0.5dp"
+                           android:layout_marginStart="5dp"
+                           android:layout_marginEnd="5dp"
+                           android:background="@color/gray"
+                           app:layout_constraintBottom_toBottomOf="parent"
+                     />
+                 </android.support.constraint.ConstraintLayout>
+
+             </android.support.constraint.ConstraintLayout>
+
+
+            </com.ares.datacontentlayout.DataContentLayout>
+
+             </android.support.v4.widget.NestedScrollView>
+
+
+
+
+
+        </android.support.constraint.ConstraintLayout>
+</layout>

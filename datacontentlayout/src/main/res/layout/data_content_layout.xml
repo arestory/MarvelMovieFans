@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    android:id="@+id/rootLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/loading_layout"
+        layout="@layout/loading_content_layout"/>
+    <include
+        android:id="@+id/error_layout"
+        android:visibility="gone"
+        layout="@layout/error_content_layout"/>
+    <include
+        android:id="@+id/empty_layout"
+        android:visibility="gone"
+        layout="@layout/empty_content_layout"/>
+</FrameLayout>
