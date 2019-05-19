@@ -2,23 +2,23 @@ package arestory.com.marvelmoviefans.activities
 
 import android.content.Context
 import android.content.Intent
-import android.support.v7.widget.Toolbar
+import android.os.Bundle
 import android.view.View
 import arestory.com.marvelmoviefans.R
-import arestory.com.marvelmoviefans.base.BaseActivity
 import arestory.com.marvelmoviefans.base.BaseDataBindingActivity
 import arestory.com.marvelmoviefans.databinding.ActivityFeedbackBinding
 import arestory.com.marvelmoviefans.datasource.DataCallback
 import arestory.com.marvelmoviefans.datasource.UserDataSource
 import arestory.com.marvelmoviefans.util.ToastUtil
-import com.ares.movie.entity.FeedbackEntity
+import arestory.com.marvelmoviefans.bean.FeedbackEntity
 
 class FeedbackActivity:BaseDataBindingActivity<ActivityFeedbackBinding>() {
     override fun getLayoutId(): Int = R.layout.activity_feedback
 
-    override fun doMain() {
+    override fun doMain(savedInstanceState: Bundle?) {
 
         initToolbarSetting(dataBinding.toolbar)
+        dataBinding.etContent.requestFocus()
         dataBinding.btnCommit.setOnClickListener {
 
             val content  = dataBinding.etContent.text.toString()
@@ -29,6 +29,7 @@ class FeedbackActivity:BaseDataBindingActivity<ActivityFeedbackBinding>() {
             enableInput(false)
             val feedbackEntity = FeedbackEntity()
             feedbackEntity.content = content
+            feedbackEntity.questionId = intent.getStringExtra(QUESTION_ID)
             val userId =  UserDataSource.getLoginUser(this@FeedbackActivity)?.id
             feedbackEntity.userId =when(userId){
 
@@ -72,10 +73,18 @@ class FeedbackActivity:BaseDataBindingActivity<ActivityFeedbackBinding>() {
 
     companion object {
 
+        const val QUESTION_ID ="questionId"
 
         fun start(context:Context){
 
             context.startActivity(Intent(context,FeedbackActivity::class.java))
+        }
+
+        fun start(context:Context,questionId:String?){
+
+            val intent = Intent(context,FeedbackActivity::class.java)
+            intent.putExtra(QUESTION_ID,questionId)
+            context.startActivity(intent)
         }
     }
 }

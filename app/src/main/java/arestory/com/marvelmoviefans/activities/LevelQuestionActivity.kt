@@ -21,10 +21,14 @@ import arestory.com.marvelmoviefans.bean.UserInfo
 import  arestory.com.marvelmoviefans.databinding.ActivityLevelQuestionBinding
 import arestory.com.marvelmoviefans.datasource.DataCallback
 import arestory.com.marvelmoviefans.datasource.QuestionDataSource
+import arestory.com.marvelmoviefans.datasource.SettingDataSource
 import arestory.com.marvelmoviefans.datasource.UserDataSource
 import arestory.com.marvelmoviefans.util.RxBus
 import arestory.com.marvelmoviefans.util.ToastUtil
 import com.ares.datacontentlayout.DataContentLayout
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.InterstitialAd
 
 
 class LevelQuestionActivity : BaseDataBindingActivity<ActivityLevelQuestionBinding>() {
@@ -55,7 +59,7 @@ class LevelQuestionActivity : BaseDataBindingActivity<ActivityLevelQuestionBindi
     fun getQuestionList() {
 
 
-        val page = intent.getSerializableExtra("page") as QuestionPage
+        page = intent.getSerializableExtra("page") as QuestionPage
         dataBinding.page = page
         dataBinding.dataContentLayout.showLoading()
         QuestionDataSource.getQuestionList(
@@ -130,9 +134,7 @@ class LevelQuestionActivity : BaseDataBindingActivity<ActivityLevelQuestionBindi
                                     RxBus.get().post(questionPage)
 
                                     ToastUtil.showLongToast(this@LevelQuestionActivity, "恭喜你本关已全部答对！")
-
-
-
+                                    finish()
                                 }
 
                             }else{
@@ -222,13 +224,48 @@ class LevelQuestionActivity : BaseDataBindingActivity<ActivityLevelQuestionBindi
             })
     }
 
-    override fun doMain() {
+
+    private lateinit var mInterstitialAd: InterstitialAd
+
+    override fun doMain(savedInstanceState: Bundle?) {
         initToolbarSetting(dataBinding.toolbar)
 
+
+
+        if(SettingDataSource.isAdvOpen(this)){
+
+            mInterstitialAd = InterstitialAd(this)
+            mInterstitialAd.adUnitId = "ca-app-pub-8884790662094305/2457116808"
+//        mInterstitialAd.adUnitId = "ca-app-pub-3940256099942544/1033173712"
+            mInterstitialAd.loadAd(AdRequest.Builder().build())
+
+            mInterstitialAd.adListener = object : AdListener() {
+
+                override fun onAdLoaded() {
+                    super.onAdLoaded()
+                    mInterstitialAd.show()
+                }
+            }
+        }
         dataBinding.btnSkip.setOnClickListener {
             val layoutManager = (dataBinding.rvQuestion.layoutManager as LinearLayoutManager)
             if (layoutManager.findFirstVisibleItemPosition() + 1 >= dataBinding.questionAdapter!!.itemCount) {
-                Toast.makeText(this@LevelQuestionActivity, "已经是最后一页了", Toast.LENGTH_SHORT).show()
+
+                val questionAdapter = (dataBinding.questionAdapter as QuestionAdapter)
+
+                //如果全部回答正确
+                if (questionAdapter.data.all {
+                        it.hadAnswer
+                    }) {
+
+                    val questionPage = QuestionPage()
+                    questionPage.count = 10
+                    questionPage.finish = true
+                    questionPage.pageIndex = page.pageIndex!!
+                    RxBus.get().post(questionPage)
+                    ToastUtil.showLongToast(this@LevelQuestionActivity, "恭喜你本关已全部答对！")
+                }
+                finish()
             } else {
                 dataBinding.rvQuestion.smoothScrollToPosition(layoutManager.findFirstVisibleItemPosition() + 1)
             }

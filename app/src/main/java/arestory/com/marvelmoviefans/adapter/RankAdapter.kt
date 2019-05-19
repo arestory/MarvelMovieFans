@@ -1,6 +1,7 @@
 package arestory.com.marvelmoviefans.adapter
 
 import android.app.Activity
+import android.widget.ImageView
 import arestory.com.marvelmoviefans.R
 import arestory.com.marvelmoviefans.activities.UserInfoActivity
 import arestory.com.marvelmoviefans.common.GlideApp
@@ -21,7 +22,9 @@ class RankAdapter(data:List<UserPoint>): BaseQAdapter<UserPoint, ItemRankBinding
         helper?.itemView?.setOnClickListener {
 
 
-            UserInfoActivity.startWithAnim( helper?.itemView?.context!! as Activity,item?.userId!!,helper?.dataViewBinding.ivAvatar)
+
+            UserInfoActivity.start(helper?.itemView?.context!! as Activity,item?.userId!!)
+//            UserInfoActivity.startWithAnim( helper?.itemView?.context!! as Activity,item?.userId!!,helper.getView<ImageView>(R.id.ivAvatar))
 
         }
 

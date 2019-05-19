@@ -1,5 +1,9 @@
 package arestory.com.marvelmoviefans
 
+import android.content.Context
+import android.content.Intent
+import android.os.Bundle
+import android.os.PersistableBundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
 import arestory.com.marvelmoviefans.databinding.ActivityMainBinding
@@ -8,6 +12,13 @@ import arestory.com.marvelmoviefans.fragments.NoAdminQuestionFragment
 import arestory.com.marvelmoviefans.fragments.PassAnswerFragment
 import arestory.com.marvelmoviefans.fragments.RandomAnswerFragment
 import arestory.com.marvelmoviefans.fragments.UserInfoFragment
+import arestory.com.marvelmoviefans.util.ToastUtil
+import cn.waps.AppConnect
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.InterstitialAd
+import com.tencent.bugly.Bugly
+import com.tencent.bugly.beta.Beta
 
 
 class MainActivity : BaseDataBindingActivity<ActivityMainBinding>() {
@@ -20,16 +31,28 @@ class MainActivity : BaseDataBindingActivity<ActivityMainBinding>() {
     private val fragments = ArrayList<Fragment>()
     override fun getLayoutId(): Int =R.layout.activity_main
 
-    override fun doMain() {
+    private val fragmentTags = arrayListOf("random","pass","noAdmin","user")
+    override fun doMain(savedInstanceState: Bundle?) {
+        if(savedInstanceState==null){
+            randomAnswerFragment = RandomAnswerFragment.newInstance()
+            passAnswerFragment = PassAnswerFragment.newInstance()
+            noAdminQuestionFragment = NoAdminQuestionFragment.newInstance()
+            userInfoFragment = UserInfoFragment.newInstance()
+            lastIndex = 0
+        }else{
 
-        randomAnswerFragment = RandomAnswerFragment.newInstance()
-        passAnswerFragment = PassAnswerFragment.newInstance()
-        noAdminQuestionFragment = NoAdminQuestionFragment.newInstance()
-        userInfoFragment = UserInfoFragment.newInstance()
+            randomAnswerFragment = supportFragmentManager.findFragmentByTag(fragmentTags[0]) as RandomAnswerFragment
+            passAnswerFragment = supportFragmentManager.findFragmentByTag(fragmentTags[1]) as PassAnswerFragment
+            noAdminQuestionFragment = supportFragmentManager.findFragmentByTag(fragmentTags[2]) as NoAdminQuestionFragment
+            userInfoFragment = supportFragmentManager.findFragmentByTag(fragmentTags[3]) as UserInfoFragment
+            lastIndex = savedInstanceState.getInt("lastIndex",0)
+        }
         fragments.add(randomAnswerFragment)
         fragments.add(passAnswerFragment)
         fragments.add(noAdminQuestionFragment)
         fragments.add(userInfoFragment)
+
+
         dataBinding.bottomNv.labelVisibilityMode=1
         dataBinding.bottomNv.setOnNavigationItemSelectedListener{
 
@@ -45,10 +68,22 @@ class MainActivity : BaseDataBindingActivity<ActivityMainBinding>() {
         }
 
 
-        switchFragment(0)
-     }
+        switchFragment(lastIndex)
+
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
+        super.onSaveInstanceState(outState, outPersistentState)
+        outState?.putInt("lastIndex",lastIndex)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        AppConnect.getInstance(this).close()
+    }
 
    private fun switchFragment(pos:Int){
+
 
        val ft = supportFragmentManager.beginTransaction()
 
@@ -58,12 +93,22 @@ class MainActivity : BaseDataBindingActivity<ActivityMainBinding>() {
        lastIndex = pos
        ft.hide(lastFragment)
        if(!currentFragment.isAdded){
-           ft.add(R.id.frameLayout,currentFragment)
+           ft.add(R.id.frameLayout,currentFragment,fragmentTags[pos])
+
        }
        ft.show(currentFragment)
 
        ft.commitAllowingStateLoss()
 
+    }
+
+    companion object {
+
+
+        fun start(context: Context){
+
+            context.startActivity(Intent(context,MainActivity::class.java))
+        }
     }
 
 

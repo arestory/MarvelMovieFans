@@ -4,7 +4,7 @@ import arestory.com.marvelmoviefans.bean.QuestionEntity
 import arestory.com.marvelmoviefans.bean.UpdateUserRequestBody
 import arestory.com.marvelmoviefans.bean.UserInfo
 import arestory.com.marvelmoviefans.bean.UserRequestBody
-import com.ares.movie.entity.FeedbackEntity
+import arestory.com.marvelmoviefans.bean.FeedbackEntity
 import com.ares.movie.entity.UserPoint
 import com.ares.movie.http.CommonResponse
 import io.reactivex.Observable
@@ -34,16 +34,16 @@ interface UserApi {
     fun updateUserInfo(@Path("id")id:String?,@Body  requestBody: UpdateUserRequestBody): Observable<CommonResponse<UserInfo>>
 
     @GET("/user/{id}/getPoint")
-    fun getUserPoint(@Path("id")id:String):Observable<CommonResponse<Int>>
+    fun getUserPoint(@Path("id")id:String?):Observable<CommonResponse<Int>>
 
     @POST("/user/feedback/commit")
-    fun commitFeedback(@Body body:FeedbackEntity):Observable<CommonResponse<String>>
+    fun commitFeedback(@Body body: FeedbackEntity):Observable<CommonResponse<String>>
 
     @GET("/user/getPointRank/{page}/{count}")
     fun getPointRank(@Path("page")page: Int,@Path("count")count: Int):Observable<CommonResponse<List<UserPoint>>>
 
     @POST("/user/{userId}/answer/{questionId}")
-    fun answerQuestion(@Path("userId")userId:String,@Path("questionId")questionId:String):Observable<CommonResponse<String>>
+    fun answerQuestion(@Path("userId")userId:String?,@Path("questionId")questionId:String):Observable<CommonResponse<String>>
 
 
     @Multipart

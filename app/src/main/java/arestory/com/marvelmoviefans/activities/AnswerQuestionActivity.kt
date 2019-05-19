@@ -3,6 +3,7 @@ package arestory.com.marvelmoviefans.activities
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -23,7 +24,7 @@ class AnswerQuestionActivity: BaseDataBindingActivity<ActivityAnswerQuestionBind
 
     override fun getLayoutId(): Int  = R.layout.activity_answer_question
 
-    override fun doMain() {
+    override fun doMain(savedInstanceState: Bundle?) {
         initToolbarSetting(dataBinding.toolbar)
 
         getRandomQuestion()

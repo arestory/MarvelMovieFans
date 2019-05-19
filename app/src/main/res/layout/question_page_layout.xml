@@ -84,16 +84,36 @@
                                                 app:layout_constraintEnd_toEndOf="parent"
                                                 app:layout_constraintStart_toStartOf="parent"/>
 
-        <com.google.android.gms.ads.AdView
-                android:id="@+id/adView"
+        <LinearLayout
+                android:id="@+id/advLayout"
+                android:orientation="vertical"
                 app:layout_constraintTop_toBottomOf="@id/rvKeywords"
-                android:layout_width="wrap_content"
-                android:layout_height="60dp"
-                android:layout_alignParentBottom="true" android:layout_marginEnd="8dp"
-                app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="8dp"
-                app:adSize="BANNER"
-                app:adUnitId="ca-app-pub-8884790662094305/9701219997"
-                app:layout_constraintStart_toStartOf="parent">
-        </com.google.android.gms.ads.AdView>
+                android:layout_width="match_parent" android:layout_height="60dp">
+            <com.google.android.gms.ads.AdView
+                    android:id="@+id/adView"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toBottomOf="@id/rvKeywords"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"  android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="8dp"
+                    app:adSize="BANNER"
+                    app:adUnitId="ca-app-pub-8884790662094305/4447364637"
+                    app:layout_constraintStart_toStartOf="parent">
+
+            </com.google.android.gms.ads.AdView>
+            <LinearLayout
+                        android:orientation="vertical"
+                        android:id="@+id/advWps"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+        <ImageView android:layout_width="wrap_content"
+                   android:id="@+id/ivHelp"
+                   app:layout_constraintTop_toBottomOf="@id/advLayout"
+                   android:background="@drawable/btn_help_selector"
+                   android:layout_height="wrap_content" app:layout_constraintEnd_toEndOf="parent"
+                   android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
+                   android:layout_marginStart="8dp"/>
+
     </android.support.constraint.ConstraintLayout>
 </layout>

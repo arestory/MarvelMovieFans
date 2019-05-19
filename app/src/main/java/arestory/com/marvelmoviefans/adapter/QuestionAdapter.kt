@@ -14,16 +14,25 @@ import arestory.com.marvelmoviefans.bean.QuestionEntity
 import arestory.com.marvelmoviefans.common.GlideApp
 import arestory.com.marvelmoviefans.databinding.QuestionPageLayoutBinding
 import arestory.com.marvelmoviefans.constants.AppConstants
-import arestory.com.marvelmoviefans.util.AnimationUtil
-import arestory.com.marvelmoviefans.util.ExMediaPlayer
-import arestory.com.marvelmoviefans.util.MeasUtils
-import arestory.com.marvelmoviefans.util.ShortSoundPlayer
+import arestory.com.marvelmoviefans.datasource.SettingDataSource
+import arestory.com.marvelmoviefans.datasource.UserDataSource
+import cn.waps.AppConnect
 import com.google.android.gms.ads.AdRequest
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import ywq.ares.funapp.activity.ShowImageActivity
 import java.lang.Exception
+import android.view.MenuInflater
+import android.support.v7.widget.PopupMenu
+import android.view.MenuItem
+import android.widget.Toast
+import arestory.com.marvelmoviefans.activities.FeedbackActivity
+import arestory.com.marvelmoviefans.bean.FeedbackEntity
+import arestory.com.marvelmoviefans.common.HelpPopupMenuUtil
+import arestory.com.marvelmoviefans.util.*
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+
 
 class QuestionAdapter :
     BaseQAdapter<QuestionEntity, QuestionPageLayoutBinding, MVViewHolder<QuestionPageLayoutBinding>> {
@@ -39,6 +48,8 @@ class QuestionAdapter :
 
         val question = data[pos]
         question.hadAnswer = true
+
+        doAnswerMap[question] = true
         setData(pos,question)
     }
 
@@ -64,18 +75,43 @@ class QuestionAdapter :
     private var keywordAdapterItemDecoration = HashMap<QuestionEntity?, RecyclerView.ItemDecoration?>()
     private var answerAdapterMap = HashMap<QuestionEntity?, AnswerWordAdapter?>()
     private var keywordAdapterMap = HashMap<QuestionEntity?, KeywordAdapter?>()
+    private var doAnswerMap = HashMap<QuestionEntity?, Boolean?>()
 
 
     override fun convert(helper: MVViewHolder<QuestionPageLayoutBinding>?, item: QuestionEntity?) {
 
-        helper?.dataViewBinding?.adView?.loadAd( AdRequest.Builder().build())
+        val context = helper?.itemView?.context!!
+        if(SettingDataSource.isAdvOpen(context)){
+
+//
+//            helper.dataViewBinding.adView.loadAd( AdRequest.Builder().build())
+            val openAdv=AppConnect.getInstance(context).getConfig("openADV","open")
+
+            print("openAdv?:$openAdv")
+            val loginUserPoint = UserDataSource.getLoginUserPoint(context)
+            if(openAdv=="open"&&(loginUserPoint>100)&&!item?.hadAnswer!!){
+                helper.dataViewBinding.advLayout.visibility = View.VISIBLE
+                AppConnect.getInstance(context).showBannerAd(context, helper.dataViewBinding.advWps)
+            }else{
+                helper.dataViewBinding.advLayout.visibility = View.INVISIBLE
+            }
+        }else{
+            helper.dataViewBinding.advLayout.visibility = View.INVISIBLE
+
+        }
+
+        helper.dataViewBinding.ivHelp.setOnClickListener {
+
+            HelpPopupMenuUtil.showPopupMenu(context,helper.dataViewBinding.ivHelp,item!!)
+        }
         var player: ExMediaPlayer?=null
         if (item?.type == "image") {
-            GlideApp.with(helper!!.itemView).load(AppConstants.URL.FILE_PRE_URL + item.url)
+            GlideApp.with(helper.itemView).load(AppConstants.URL.FILE_PRE_URL + item.url).diskCacheStrategy(
+                DiskCacheStrategy.ALL)
                 .placeholder(R.drawable.loading).into(helper.dataViewBinding.ivQuestion)
 
             helper.dataViewBinding.ivQuestion.setOnClickListener {
-                ShowImageActivity.start(helper!!.itemView.context,AppConstants.URL.FILE_PRE_URL + item.url)
+                ShowImageActivity.start(helper.itemView.context,AppConstants.URL.FILE_PRE_URL + item.url)
 
             }
 
@@ -101,7 +137,7 @@ class QuestionAdapter :
                     player = map[item]
                 }
 
-                helper?.dataViewBinding?.playBtn?.setOnClickListener {
+                helper.dataViewBinding.playBtn.setOnClickListener {
 
                     if (player?.isPlaying!!) {
                         player?.pause()
@@ -118,22 +154,22 @@ class QuestionAdapter :
             }
         }
 
-        helper?.dataViewBinding?.question = item
-        helper?.dataViewBinding?.imageVisible = item!!.type == "image"
+        helper.dataViewBinding.question = item
+        helper.dataViewBinding.imageVisible = item!!.type == "image"
         when( item.type){
             "image"->{
-                helper?.dataViewBinding?.audioLayout?.visibility =View.GONE
-                helper?.dataViewBinding?.playBtn?.visibility =View.GONE
+                helper.dataViewBinding.audioLayout.visibility =View.GONE
+                helper.dataViewBinding.playBtn.visibility =View.GONE
             }
             "audio"->{
-                helper?.dataViewBinding?.audioLayout?.visibility =View.VISIBLE
-                helper?.dataViewBinding?.playBtn?.visibility =View.VISIBLE
+                helper.dataViewBinding.audioLayout.visibility =View.VISIBLE
+                helper.dataViewBinding.playBtn.visibility =View.VISIBLE
             }
         }
 
-        helper?.dataViewBinding?.rvAnswer?.isNestedScrollingEnabled = false
-        helper?.dataViewBinding?.rvAnswer?.layoutManager =
-            GridLayoutManager(helper?.itemView?.context, item!!.answer!!.length)
+        helper.dataViewBinding.rvAnswer.isNestedScrollingEnabled = false
+        helper.dataViewBinding.rvAnswer.layoutManager =
+            GridLayoutManager(helper.itemView.context, item.answer!!.length)
 
 
         if(answerAdapterItemDecoration[item]==null){
@@ -147,7 +183,7 @@ class QuestionAdapter :
                 ) {
                     super.getItemOffsets(outRect, view, parent, state)
 
-                    val rvWidth = helper!!.dataViewBinding.rvAnswer.width
+                    val rvWidth = helper.dataViewBinding.rvAnswer.width
                     val childWidth = MeasUtils.dpToPx(50f, helper.dataViewBinding.rvAnswer.context)
                     val pos = parent.getChildLayoutPosition(view)
                     val answerLength = item.answer!!.length
@@ -173,10 +209,15 @@ class QuestionAdapter :
                     }
                 }
             }
-            helper?.dataViewBinding?.rvAnswer?.addItemDecoration( answerAdapterItemDecoration[item]!!)
+            if(doAnswerMap[item] ==null){
+                helper.dataViewBinding.rvAnswer.addItemDecoration( answerAdapterItemDecoration[item]!!)
+            }else{
+                helper.dataViewBinding.rvAnswer.removeItemDecoration( answerAdapterItemDecoration[item]!!)
+            }
+//            helper.dataViewBinding.rvAnswer.addItemDecoration( answerAdapterItemDecoration[item]!!)
         }
-        helper?.dataViewBinding?.rvKeywords?.isNestedScrollingEnabled = false
-        helper?.dataViewBinding?.rvKeywords?.layoutManager = GridLayoutManager(helper?.itemView?.context, 7)
+        helper.dataViewBinding.rvKeywords.isNestedScrollingEnabled = false
+        helper.dataViewBinding.rvKeywords.layoutManager = GridLayoutManager(helper.itemView.context, 7)
         if(keywordAdapterItemDecoration[item]==null){
             keywordAdapterItemDecoration[item] = object : RecyclerView.ItemDecoration() {
 
@@ -191,7 +232,9 @@ class QuestionAdapter :
                     outRect.bottom = 5
                 }
             }
-            helper?.dataViewBinding?.rvKeywords?.addItemDecoration(keywordAdapterItemDecoration[item]!!)
+            helper.dataViewBinding.rvKeywords.addItemDecoration(keywordAdapterItemDecoration[item]!!)
+        }else{
+            helper.dataViewBinding.rvKeywords.addItemDecoration(keywordAdapterItemDecoration[item]!!)
         }
 
         if(keywordAdapterMap[item]==null){

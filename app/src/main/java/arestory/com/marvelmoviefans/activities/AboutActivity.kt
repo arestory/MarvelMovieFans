@@ -3,16 +3,19 @@ package arestory.com.marvelmoviefans.activities
 import android.content.Context
 import android.content.Intent
 import android.support.v7.widget.Toolbar
+import arestory.com.marvelmoviefans.BuildConfig
 import arestory.com.marvelmoviefans.R
 import arestory.com.marvelmoviefans.base.BaseActivity
+import kotlinx.android.synthetic.main.activity_about.*
 
 class AboutActivity:BaseActivity() {
     override fun getLayoutId(): Int = R.layout.activity_about
 
     override fun doMain() {
 
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
         initToolbarSetting(toolbar)
+
+        tvVersion.text = "v${BuildConfig.VERSION_NAME}"
     }
 
     companion object {

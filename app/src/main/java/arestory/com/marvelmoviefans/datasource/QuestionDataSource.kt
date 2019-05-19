@@ -66,7 +66,7 @@ object QuestionDataSource {
         val disposable =  questionApi.getQuestions(page,count,userId).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
              .subscribe({
 
-                 if(it.code ==200){
+                 if(it.code ==200&&it.data!=null){
 
                      callback.onSuccess(it.data!!)
 

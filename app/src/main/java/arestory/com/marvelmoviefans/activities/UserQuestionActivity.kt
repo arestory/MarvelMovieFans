@@ -2,6 +2,8 @@ package arestory.com.marvelmoviefans.activities
 
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
+import arestory.com.marvelmoviefans.BuildConfig
 import arestory.com.marvelmoviefans.R
 import arestory.com.marvelmoviefans.base.BaseDataBindingActivity
 import arestory.com.marvelmoviefans.databinding.ActivityUserQuestionBinding
@@ -14,7 +16,7 @@ class UserQuestionActivity:BaseDataBindingActivity<ActivityUserQuestionBinding>(
     lateinit var questionFragment: NoAdminQuestionFragment
     override fun getLayoutId(): Int = R.layout.activity_user_question
 
-    override fun doMain() {
+    override fun doMain(savedInstanceState: Bundle?) {
 
         createUserId = intent.getStringExtra(CREATE_USER_ID)
         userNickName = intent.getStringExtra(NICK_NAME)

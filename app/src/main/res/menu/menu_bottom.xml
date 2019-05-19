@@ -15,7 +15,7 @@
 
     <item
             android:id="@+id/action_circle"
-            android:icon="@drawable/ic_bubble_chart_black_24dp"
+            android:icon="@drawable/ic_bubble_chart_white_24dp"
             android:title="@string/bottom_bar_circle" />
     <item
             android:id="@+id/action_user"

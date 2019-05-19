@@ -14,12 +14,12 @@ abstract class BaseDataBindingActivity<T : ViewDataBinding> : AppCompatActivity(
     lateinit var dataBinding:T
 
     abstract fun getLayoutId():Int
-    abstract fun doMain()
+    abstract fun doMain(savedInstanceState: Bundle?)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dataBinding = DataBindingUtil.setContentView(this,getLayoutId())
-        doMain()
+        doMain(savedInstanceState)
     }
 
 

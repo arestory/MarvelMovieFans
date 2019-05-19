@@ -13,17 +13,32 @@
                                                  android:layout_height="match_parent">
 
 
-        <TextView
-                android:id="@+id/tvTitle"
-                android:background="@color/colorAccent"
-                android:text="问答圈"
-                android:textSize="20sp"
-                android:padding="10dp"
-                tools:text="问答圈"
-                android:visibility="@{createUserId==null?View.VISIBLE:View.GONE}"
-                android:textColor="@color/white"
-                android:gravity="center_vertical"
-                app:layout_constraintTop_toTopOf="parent" android:layout_width="match_parent" android:layout_height="60dp"/>
+        <LinearLayout android:layout_width="match_parent"
+                      android:orientation="horizontal"
+                      android:background="@color/colorAccent"
+                      app:layout_constraintTop_toTopOf="parent"
+                      android:layout_height="60dp">
+
+
+            <ImageView android:layout_width="wrap_content"
+                       android:id="@+id/icon"
+                       android:layout_marginStart="10dp"
+                       android:layout_gravity="center_vertical"
+                       android:background="@drawable/ic_bubble_chart_white_24dp"
+                       app:layout_constraintStart_toStartOf="parent"
+                       android:layout_height="wrap_content"/>
+            <TextView
+                    android:id="@+id/tvTitle"
+                    android:text="@string/bottom_bar_circle"
+                    android:textSize="20sp"
+                    android:padding="10dp"
+                    tools:text="问答圈"
+                    android:visibility="@{createUserId==null?View.VISIBLE:View.GONE}"
+                    android:textColor="@color/white"
+                    android:gravity="center_vertical"
+                    app:layout_constraintTop_toTopOf="parent" android:layout_width="match_parent" android:layout_height="60dp"/>
+        </LinearLayout>
+
 
         <com.ares.datacontentlayout.DataContentLayout
 
@@ -32,12 +47,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-            <android.support.v7.widget.RecyclerView
-                    app:layoutManager="android.support.v7.widget.GridLayoutManager"
-                    android:adapter="@{questionAdapter}"
+
+            <android.support.v4.widget.SwipeRefreshLayout
+                    android:id="@+id/refreshLayout"
                     android:layout_width="match_parent"
-                    android:id="@+id/rvQuestion"
-                    android:layout_height="wrap_content"/>
+                                                          android:layout_height="match_parent">
+                <android.support.v7.widget.RecyclerView
+                        app:layoutManager="android.support.v7.widget.GridLayoutManager"
+                        android:adapter="@{questionAdapter}"
+                        android:layout_width="match_parent"
+                        android:id="@+id/rvQuestion"
+                        android:layout_height="wrap_content"/>
+
+            </android.support.v4.widget.SwipeRefreshLayout>
+
 
         </com.ares.datacontentlayout.DataContentLayout>
 

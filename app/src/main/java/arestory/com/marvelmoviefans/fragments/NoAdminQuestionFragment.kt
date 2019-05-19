@@ -29,7 +29,7 @@ class NoAdminQuestionFragment:BaseDataBindingFragment<FragmentNotAdminQuestionsB
     private var currentPage =1
 
     private var isLoadingMore = false
-    private lateinit var footView: View
+    private  var footView: View?=null
     private lateinit var adapter: NotAdminQuestionAdapter
     override fun getLayoutId(): Int = R.layout.fragment_not_admin_questions
 
@@ -52,25 +52,40 @@ class NoAdminQuestionFragment:BaseDataBindingFragment<FragmentNotAdminQuestionsB
 
         }
 
+
         val dis2 = RxBus.get().toFlowable(String::class.java).subscribe {
 
 
-            if(it==UserDataSource.EXIT_USER){
+            if(it==UserDataSource.EXIT_USER&&context!=null){
+
 
                 getQuestion(UserDataSource.getLoginUserId(context!!),1)
             }
 
         }
         val dis3 = RxBus.get().toFlowable(UserInfo::class.java).subscribe {
-            getQuestion(UserDataSource.getLoginUserId(context!!),1)
+            if(context!=null){
+                getQuestion(UserDataSource.getLoginUserId(context!!),1)
+            }
 
         }
-        getQuestion(UserDataSource.getLoginUserId(context!!),currentPage)
+        if(context!=null){
+            getQuestion(UserDataSource.getLoginUserId(context!!),currentPage)
+        }
+
+        dataBinding.refreshLayout.setColorSchemeResources(R.color.red,R.color.yellow)
+        dataBinding.refreshLayout.setOnRefreshListener {
+
+            if(context!=null){
+                getQuestion(UserDataSource.getLoginUserId(context!!),1,true)
+            }
+
+        }
      }
 
-    private fun getQuestion(userId:String?,page:Int){
+    private fun getQuestion(userId:String?,page:Int,refresh:Boolean=false){
 
-        if(page==1){
+        if(page==1&&!refresh){
             dataBinding.dataContentLayout.showLoading()
         }
         QuestionDataSource.getNotAdminQuestions(createUserId,userId,page,object :DataCallback<List<NoAdminQuestion>>{
@@ -78,7 +93,7 @@ class NoAdminQuestionFragment:BaseDataBindingFragment<FragmentNotAdminQuestionsB
 
                 if(page==1){
                     adapter = NotAdminQuestionAdapter(data)
-
+                    dataBinding.refreshLayout.isRefreshing = false
                     adapter.setItemClick(object :NotAdminQuestionAdapter.ItemClick{
                         override fun onClick(questionEntity: NoAdminQuestion?,imageView: ImageView) {
 
@@ -88,7 +103,9 @@ class NoAdminQuestionFragment:BaseDataBindingFragment<FragmentNotAdminQuestionsB
 
                     })
                     footView = LayoutInflater.from(context!!).inflate(R.layout.view_footer,null)
-                    adapter.addFooterView(footView)
+                    if(data.size>5){
+                        adapter.addFooterView(footView)
+                    }
                     dataBinding.questionAdapter=adapter
                     dataBinding.rvQuestion.layoutManager = LinearLayoutManager(context!!,RecyclerView.VERTICAL,false)
                     dataBinding.rvQuestion.addItemDecoration(
@@ -129,14 +146,20 @@ class NoAdminQuestionFragment:BaseDataBindingFragment<FragmentNotAdminQuestionsB
                    }
 
                 }else{
-                    adapter.removeFooterView(footView)
+                    if(footView!=null){
+
+                        adapter.removeFooterView(footView)
+                    }
 
                     if (data.isEmpty()) {
                         ToastUtil.showShortToast(context!!, "已经没有更多数据了")
 
                     } else {
                         adapter.addData(data)
-                        adapter.addFooterView(footView)
+                        if(footView!=null){
+
+                            adapter.addFooterView(footView)
+                        }
                     }
                     isLoadingMore = false
                 }
@@ -153,6 +176,8 @@ class NoAdminQuestionFragment:BaseDataBindingFragment<FragmentNotAdminQuestionsB
                             getQuestion(userId, page)
                         }
                     })
+
+                    dataBinding.refreshLayout.isRefreshing = false
                 } else {
                     isLoadingMore = false
                     adapter.removeFooterView(footView)

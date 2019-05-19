@@ -102,12 +102,14 @@
                             android:checked="@{openAdv}"
                             android:layout_marginEnd="10dp"
                             android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-                </FrameLayout>
-                <View android:layout_width="match_parent"
-                      android:background="@color/gray"
-                      app:layout_constraintTop_toBottomOf="@id/layoutAdv"
-                      android:layout_height="0.5dp"/>
 
+                    <View android:layout_width="match_parent"
+                          android:background="@color/gray"
+                          android:layout_gravity="bottom"
+                          app:layout_constraintTop_toBottomOf="@id/layoutAdv"
+                          android:layout_height="0.5dp"/>
+
+                </FrameLayout>
 
                 <FrameLayout
                         android:visibility="gone"

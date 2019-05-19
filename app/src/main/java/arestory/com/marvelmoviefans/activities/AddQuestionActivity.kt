@@ -3,6 +3,7 @@ package arestory.com.marvelmoviefans.activities
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.view.View
 import arestory.com.marvelmoviefans.R
 import arestory.com.marvelmoviefans.base.BaseDataBindingActivity
@@ -18,6 +19,7 @@ import arestory.com.marvelmoviefans.util.RxBus
 import arestory.com.marvelmoviefans.util.ToastUtil
 import arestory.com.marvelmoviefans.util.UriUtil
 import com.afollestad.materialdialogs.MaterialDialog
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.zhihu.matisse.Matisse
 import com.zhihu.matisse.MimeType
@@ -83,7 +85,7 @@ class AddQuestionActivity: BaseDataBindingActivity<ActivityAddQuestionBinding>()
         }
 
     }
-    override fun doMain() {
+    override fun doMain(savedInstanceState: Bundle?) {
 
         initToolbarSetting(dataBinding.toolbar)
 
@@ -99,7 +101,7 @@ class AddQuestionActivity: BaseDataBindingActivity<ActivityAddQuestionBinding>()
             val title = dataBinding.titleEt.text.toString()
             if(title.isEmpty()){
                 dataBinding.titleEt.requestFocus()
-                dataBinding.titleEt.error ="标题不能为空"
+                dataBinding.titleEt.error ="问题不能为空"
                 return@setOnClickListener
             }
             val answer = dataBinding.answerEt.text.toString()
@@ -195,7 +197,7 @@ class AddQuestionActivity: BaseDataBindingActivity<ActivityAddQuestionBinding>()
                         dataBinding.ivQuestion.setOnClickListener {
                             gotoGallery()
                         }
-                        GlideApp.with(this@AddQuestionActivity).load(file).into(dataBinding.ivQuestion)
+                        GlideApp.with(this@AddQuestionActivity).load(file).diskCacheStrategy(DiskCacheStrategy.RESOURCE).into(dataBinding.ivQuestion)
 
                     }
 

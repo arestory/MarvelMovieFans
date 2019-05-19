@@ -1,8 +1,9 @@
 <resources>
-    <string name="app_name">MarvelMovieFans</string>
+    <string name="app_name">漫威猜影团</string>
     <string name="bottom_bar_random">随机答题</string>
-    <string name="bottom_bar_pass">闯关问答</string>
+    <string name="bottom_bar_pass">关卡选择</string>
     <string name="bottom_bar_circle">问答圈</string>
     <string name="bottom_bar_user">我</string>
+    <string name="content_about_this_app">这是一款基于漫威背景的猜电影APP，检验你是不是一个合格的漫威真爱粉！用户也可以添加新的问题，在审核通过后，提交的问题将会出现在问答圈，与大家一起分享猜影的快乐！</string>
 
 </resources>

@@ -3,6 +3,7 @@ package ywq.ares.funapp.activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
 import android.view.View
@@ -45,10 +46,12 @@ class ShowImageActivity : BaseActivity() {
         photoView.enable()
         photoView.scaleType = ImageView.ScaleType.FIT_CENTER
 
-        loadImage(this,imageUrl,photoView,loadingLayout)
+//        loadImage(this,imageUrl,photoView,loadingLayout)
         loadingLayout.setOnClickListener {
             finish()
         }
+        loadingLayout.showContent()
+        GlideApp.with(this).load(imageUrl).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder( R.drawable.loading).into(photoView)
         photoView.setOnClickListener { v ->
 
             finish()

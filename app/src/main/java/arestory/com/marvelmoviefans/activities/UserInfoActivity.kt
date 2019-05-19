@@ -3,6 +3,7 @@ package arestory.com.marvelmoviefans.activities
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v7.widget.Toolbar
 import android.text.InputType
@@ -23,6 +24,7 @@ import arestory.com.marvelmoviefans.util.*
 import com.afollestad.materialdialogs.DialogAction
 import com.afollestad.materialdialogs.MaterialDialog
 import com.ares.datacontentlayout.DataContentLayout
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.zhihu.matisse.Matisse
 import com.zhihu.matisse.MimeType
@@ -108,7 +110,7 @@ class UserInfoActivity : BaseDataBindingActivity<ActivityUserInfoBinding>() {
     }
 
 
-    override fun doMain() {
+    override fun doMain(savedInstanceState: Bundle?) {
 
         userId = intent.getStringExtra(USER_ID)
         initToolbarSetting(dataBinding.toolbar)
@@ -120,7 +122,7 @@ class UserInfoActivity : BaseDataBindingActivity<ActivityUserInfoBinding>() {
             dataBinding.user = UserDataSource.getLoginUser(this)
 
             GlideApp.with(this).load(AppConstants.URL.FILE_PRE_URL + dataBinding.user?.avatar)
-                .placeholder(R.drawable.placeholder).transform(
+                .diskCacheStrategy(DiskCacheStrategy.ALL) .placeholder(R.drawable.placeholder).transform(
                     GlideCircleTransform(1, resources.getColor(R.color.white))
                 )
                 .into(dataBinding.ivAvatar)
@@ -431,7 +433,7 @@ class UserInfoActivity : BaseDataBindingActivity<ActivityUserInfoBinding>() {
                     ShowImageActivity.start(this@UserInfoActivity,AppConstants.URL.FILE_PRE_URL + data.avatar)
                 }
                 GlideApp.with(this@UserInfoActivity).load(AppConstants.URL.FILE_PRE_URL + data.avatar)
-                    .placeholder(R.drawable.placeholder).transform(
+                    .diskCacheStrategy(DiskCacheStrategy.ALL) .placeholder(R.drawable.placeholder).transform(
                         GlideCircleTransform(1, resources.getColor(R.color.white))
                     )
                     .into(dataBinding.ivAvatar)

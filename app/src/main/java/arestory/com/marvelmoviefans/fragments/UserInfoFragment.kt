@@ -12,17 +12,21 @@ import arestory.com.marvelmoviefans.datasource.DataCallback
 import arestory.com.marvelmoviefans.datasource.UserDataSource
 import arestory.com.marvelmoviefans.util.GlideCircleTransform
 import arestory.com.marvelmoviefans.util.RxBus
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import ywq.ares.funapp.activity.ShowImageActivity
 
 class UserInfoFragment : BaseDataBindingFragment<FragmentUserBinding>() {
     override fun getLayoutId(): Int = R.layout.fragment_user
 
 
-    private fun refreshUserPoint(userId:String){
+    private var loginUserPoint :Int =0
+    private fun refreshUserPoint(userId:String?){
         UserDataSource.getUserPoint(userId, object : DataCallback<Int> {
             override fun onSuccess(data: Int) {
 
+                UserDataSource.saveLoginUserPoint(activity!!,data)
                 dataBinding.point = ":$data"
+                loginUserPoint=data
             }
 
             override fun onFail(msg: String?) {
@@ -35,12 +39,13 @@ class UserInfoFragment : BaseDataBindingFragment<FragmentUserBinding>() {
 
         if(user!=null){
 
-            GlideApp.with(context!!).load(AppConstants.URL.FILE_PRE_URL+user.avatar).placeholder(R.drawable.placeholder).transform(GlideCircleTransform(10,resources.getColor(R.color.white)))
+            GlideApp.with(context!!).load(AppConstants.URL.FILE_PRE_URL+user.avatar).placeholder(R.drawable.placeholder).diskCacheStrategy(
+                DiskCacheStrategy.ALL).transform(GlideCircleTransform(10,resources.getColor(R.color.white)))
                 .into(dataBinding.ivUser)
 
             dataBinding.userName = user.nickName
 
-            dataBinding.point = ""
+            dataBinding.point = ":0"
             refreshUserPoint(user.id!!)
 
 
@@ -52,10 +57,10 @@ class UserInfoFragment : BaseDataBindingFragment<FragmentUserBinding>() {
 
 
         }else{
-            GlideApp.with(context!!).load(R.drawable.placeholder).transform(GlideCircleTransform(10,resources.getColor(R.color.white)))
+            GlideApp.with(context!!).load(R.drawable.placeholder).diskCacheStrategy(DiskCacheStrategy.ALL).transform(GlideCircleTransform(10,resources.getColor(R.color.white)))
                 .into(dataBinding.ivUser)
             dataBinding.userName = "未登录"
-            dataBinding.point = ""
+            dataBinding.point = ":0"
 
             dataBinding.ivUser.setOnClickListener {
 
@@ -82,7 +87,11 @@ class UserInfoFragment : BaseDataBindingFragment<FragmentUserBinding>() {
 
 
             if(it=="answer"){
-                refreshUserPoint(getLoginUser()?.id!!)
+                var userId = getLoginUser()?.id
+                if(userId!=null){
+
+                    refreshUserPoint(userId)
+                }
             }else if(it =="exitUser"){
 
                 initUser(getLoginUser())
@@ -130,7 +139,7 @@ class UserInfoFragment : BaseDataBindingFragment<FragmentUserBinding>() {
 
         }
         dataBinding.btnSetting.setOnClickListener {
-            SettingActivity.start(context!!)
+            SettingActivity.start(context!!,loginUserPoint)
 
         }
         dataBinding.btnAbout.setOnClickListener {

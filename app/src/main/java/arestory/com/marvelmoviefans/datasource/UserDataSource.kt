@@ -2,24 +2,19 @@ package arestory.com.marvelmoviefans.datasource
 
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
-import android.content.SharedPreferences
 import arestory.com.marvelmoviefans.bean.*
 import arestory.com.marvelmoviefans.http.RetrofitServiceManager
 import arestory.com.marvelmoviefans.http.UserApi
 import arestory.com.marvelmoviefans.util.RxBus
-import com.ares.movie.entity.FeedbackEntity
+import arestory.com.marvelmoviefans.bean.FeedbackEntity
 import com.ares.movie.entity.UserPoint
-import com.ares.movie.http.CommonResponse
 import com.google.gson.Gson
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import okhttp3.MediaType
-import org.json.JSONObject
 import java.io.File
 import okhttp3.RequestBody
 import okhttp3.MultipartBody
-import retrofit2.http.Path
-import java.util.concurrent.TimeUnit
 
 
 object UserDataSource {
@@ -91,7 +86,7 @@ object UserDataSource {
     }
 
 
-    fun answerQuestion(userId: String, questionId: String, callback: DataCallback<String>?) {
+    fun answerQuestion(userId: String?, questionId: String, callback: DataCallback<String>?) {
 
         val dis = api.answerQuestion(userId, questionId).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -109,7 +104,7 @@ object UserDataSource {
 
     }
 
-    fun getUserPoint(userId: String, callback: DataCallback<Int>) {
+    fun getUserPoint(userId: String?, callback: DataCallback<Int>) {
 
         val dis = api.getUserPoint(userId).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -135,11 +130,13 @@ object UserDataSource {
         return getLoginUser(context)?.id
     }
 
+
+
     fun login(body: UserRequestBody, callback: DataCallback<UserInfo>) {
 
         val dis = api.login(body).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({
 
-            if (it.code == 200) {
+            if (it.code == 200&&it.data!=null) {
                 callback.onSuccess(it.data!!)
             } else {
                 callback.onFail(it.msg)
@@ -158,6 +155,19 @@ object UserDataSource {
         val sp = context.getSharedPreferences("movie", MODE_PRIVATE).edit()
         sp.putString("user", Gson().toJson(userInfo))
         sp.apply()
+    }
+
+    fun saveLoginUserPoint(context: Context,point:Int){
+
+        val sp = context.getSharedPreferences("movie", MODE_PRIVATE).edit()
+        sp.putInt("${getLoginUserId(context)}Point",point)
+        sp.apply()
+
+    }
+    fun getLoginUserPoint(context: Context):Int{
+
+
+        return context.getSharedPreferences("movie", MODE_PRIVATE).getInt("${getLoginUserId(context)}Point",0)
     }
 
     fun updateUserInfo(
@@ -181,10 +191,10 @@ object UserDataSource {
         })
     }
 
-    fun saveLevelPageDone(context: Context, userId: String, level: Int) {
+    fun saveLevelPageDone(context: Context?, userId: String, level: Int) {
 
         val userFinishLevelJson =
-            context.getSharedPreferences("movie", MODE_PRIVATE).getString(userId.plus("-level"), "")
+            context?.getSharedPreferences("movie", MODE_PRIVATE)?.getString(userId.plus("-level"), "")
         if (userFinishLevelJson!!.isNotEmpty()) {
 
             val userFinishLevel = Gson().fromJson(userFinishLevelJson, UserFinishLevel::class.java)

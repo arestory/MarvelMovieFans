@@ -2,6 +2,7 @@ package arestory.com.marvelmoviefans.activities
 
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -20,6 +21,11 @@ import arestory.com.marvelmoviefans.uiview.CustomLoadMoreView
 import arestory.com.marvelmoviefans.util.RxBus
 import arestory.com.marvelmoviefans.util.ToastUtil
 import com.ares.datacontentlayout.DataContentLayout
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.fragment_user.*
+import java.util.concurrent.TimeUnit
 
 class MyQuestionActivity : BaseDataBindingActivity<ActivityMyQuestionBinding>() {
     override fun getLayoutId(): Int = R.layout.activity_my_question
@@ -30,7 +36,7 @@ class MyQuestionActivity : BaseDataBindingActivity<ActivityMyQuestionBinding>() 
     private var isLoadingMore = false
     private lateinit var footView: View
 
-    override fun doMain() {
+    override fun doMain(savedInstanceState: Bundle?) {
         val userId = UserDataSource.getLoginUserId(this)!!
 
         val dis = RxBus.get().toFlowable(String::class.java).subscribe {
@@ -48,14 +54,20 @@ class MyQuestionActivity : BaseDataBindingActivity<ActivityMyQuestionBinding>() 
             AddQuestionActivity.start(this@MyQuestionActivity)
         }
 
+        dataBinding.refreshLayout.setColorSchemeResources(R.color.red,R.color.yellow)
 
+        dataBinding.refreshLayout.setOnRefreshListener {
+
+            getUserQuestion(userId, 1,true)
+
+        }
 
         getUserQuestion(userId, currentPage)
 
     }
-    private fun getUserQuestion(userId: String, page: Int) {
+    private fun getUserQuestion(userId: String, page: Int,refresh:Boolean=false) {
 
-        if (page == 1) {
+        if (page == 1&&!refresh) {
             dataBinding.dataContentLayout.showLoading()
         }
         currentPage = page
@@ -63,6 +75,7 @@ class MyQuestionActivity : BaseDataBindingActivity<ActivityMyQuestionBinding>() 
             override fun onSuccess(data: List<QuestionEntity>) {
 
 
+                dataBinding.refreshLayout.isRefreshing = false
                 if (page == 1) {
                     if (data.isEmpty()) {
                         dataBinding.dataContentLayout.showEmptyContent()
@@ -117,6 +130,7 @@ class MyQuestionActivity : BaseDataBindingActivity<ActivityMyQuestionBinding>() 
             }
 
             override fun onFail(msg: String?) {
+                dataBinding.refreshLayout.isRefreshing = false
 
                 ToastUtil.showLongToast(this@MyQuestionActivity, msg)
                 if (page == 1) {

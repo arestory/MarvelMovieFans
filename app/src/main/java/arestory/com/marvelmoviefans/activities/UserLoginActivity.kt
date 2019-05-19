@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Build
+import android.os.Bundle
 import arestory.com.marvelmoviefans.R
 import arestory.com.marvelmoviefans.base.BaseDataBindingActivity
 import arestory.com.marvelmoviefans.databinding.ActivityLoginBinding
@@ -210,7 +211,7 @@ class UserLoginActivity: BaseDataBindingActivity<ActivityLoginBinding>() {
         }
     }
 
-    override fun doMain() {
+    override fun doMain(savedInstanceState: Bundle?) {
 
         initToolbarSetting(dataBinding.toolbar)
         initLayout()

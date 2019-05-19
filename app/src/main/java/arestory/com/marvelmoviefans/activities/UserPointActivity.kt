@@ -2,6 +2,7 @@ package arestory.com.marvelmoviefans.activities
 
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.DividerItemDecoration.VERTICAL
 import android.support.v7.widget.LinearLayoutManager
@@ -24,11 +25,17 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 class UserPointActivity:BaseDataBindingActivity<arestory.com.marvelmoviefans.databinding.ActivityRankBinding>() {
     override fun getLayoutId(): Int = R.layout.activity_rank
 
-    override fun doMain() {
+    override fun doMain(savedInstanceState: Bundle?) {
 
         initToolbarSetting(dataBinding.toolbar)
 
+        dataBinding.refreshLayout.setColorSchemeResources(R.color.red,R.color.yellow)
 
+        dataBinding.refreshLayout.setOnRefreshListener {
+
+            getUserPointList(1,true)
+
+        }
         getUserPointList(currentPage)
 
 
@@ -39,16 +46,17 @@ class UserPointActivity:BaseDataBindingActivity<arestory.com.marvelmoviefans.dat
     private var footView:View?=null
     private var isLoadingMore = false
 
-    private fun getUserPointList(page:Int){
+    private fun getUserPointList(page:Int,refresh:Boolean=false){
 
         currentPage = page
-        if(page==1){
+        if(page==1&&!refresh){
 
             dataBinding.dataContentLayout.showLoading()
         }
         UserDataSource.getPointRank(page,object :DataCallback<List<UserPoint>>{
             override fun onSuccess(data: List<UserPoint>) {
 
+                dataBinding.refreshLayout.isRefreshing=false
                 if(page==1){
                     dataBinding.dataContentLayout.showContent()
                     if(data.isEmpty()){
@@ -109,6 +117,8 @@ class UserPointActivity:BaseDataBindingActivity<arestory.com.marvelmoviefans.dat
             }
 
             override fun onFail(msg: String?) {
+                dataBinding.refreshLayout.isRefreshing=false
+
                 if(page==1){
                     dataBinding.dataContentLayout.showError(object :DataContentLayout.ErrorListener{
                         override fun showError(view: View) {

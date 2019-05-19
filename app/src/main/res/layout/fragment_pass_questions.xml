@@ -11,16 +11,30 @@
                                                  android:layout_height="match_parent">
 
 
+        <LinearLayout android:layout_width="match_parent"
+                      android:orientation="horizontal"
+                      android:background="@color/colorAccent"
+                      app:layout_constraintTop_toTopOf="parent"
+                      android:layout_height="60dp">
+
+
+        <ImageView android:layout_width="wrap_content"
+                   android:id="@+id/icon"
+                   android:layout_marginStart="10dp"
+                   android:layout_gravity="center_vertical"
+                   android:background="@drawable/ic_directions_bike_whit_24dp"
+                   app:layout_constraintStart_toStartOf="parent"
+                   android:layout_height="wrap_content"/>
         <TextView
                 android:id="@+id/tvTitle"
-                android:background="@color/colorAccent"
-                android:text="闯关问答"
+                android:text="@string/bottom_bar_pass"
                 android:textSize="20sp"
                 android:padding="10dp"
-                tools:text="这是标题"
-                android:textColor="@color/white"
+                tools:text="闯关问答"
+                 android:textColor="@color/white"
                 android:gravity="center_vertical"
                 app:layout_constraintTop_toTopOf="parent" android:layout_width="match_parent" android:layout_height="60dp"/>
+        </LinearLayout>
 
         <com.ares.datacontentlayout.DataContentLayout
                 android:id="@+id/dataContentLayout"
@@ -28,13 +42,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+
             <android.support.v7.widget.RecyclerView
                     app:layoutManager="android.support.v7.widget.GridLayoutManager"
                     android:adapter="@{levelAdapter}"
                     android:layout_width="match_parent"
                     android:id="@+id/rvLevel"
                     android:layout_height="wrap_content"/>
-
         </com.ares.datacontentlayout.DataContentLayout>
 
     </android.support.constraint.ConstraintLayout>

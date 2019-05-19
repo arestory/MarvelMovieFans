@@ -20,4 +20,12 @@
 
     </style>
 
+
+    <style name="WelcomeTheme" parent="AppTheme">
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@drawable/app_welcome</item>
+        <item name="android:windowFullscreen">true</item>
+
+    </style>
+
 </resources>

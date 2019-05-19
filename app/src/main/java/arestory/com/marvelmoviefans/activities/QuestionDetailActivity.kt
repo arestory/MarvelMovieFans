@@ -5,9 +5,11 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
 import android.os.Build
+import android.os.Bundle
 import android.support.annotation.RequiresApi
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.PopupMenu
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.ImageView
@@ -19,18 +21,51 @@ import arestory.com.marvelmoviefans.bean.AnswerWord
 import arestory.com.marvelmoviefans.bean.NoAdminQuestion
 import arestory.com.marvelmoviefans.bean.QuestionEntity
 import arestory.com.marvelmoviefans.common.GlideApp
+import arestory.com.marvelmoviefans.common.HelpPopupMenuUtil
 import arestory.com.marvelmoviefans.constants.AppConstants
 import arestory.com.marvelmoviefans.databinding.ActivityQuestionDetailBinding
 import arestory.com.marvelmoviefans.datasource.DataCallback
+import arestory.com.marvelmoviefans.datasource.SettingDataSource
 import arestory.com.marvelmoviefans.datasource.UserDataSource
 import arestory.com.marvelmoviefans.util.*
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.InterstitialAd
+import ywq.ares.funapp.activity.ShowImageActivity
 
 class QuestionDetailActivity:BaseDataBindingActivity<ActivityQuestionDetailBinding>() {
 
     private lateinit var questionEntity: NoAdminQuestion
     override fun getLayoutId(): Int= R.layout.activity_question_detail
+    private lateinit var mInterstitialAd: InterstitialAd
 
-    override fun doMain() {
+    override fun doMain(savedInstanceState: Bundle?) {
+
+
+        if(SettingDataSource.isAdvOpen(this)){
+
+            mInterstitialAd = InterstitialAd(this)
+            mInterstitialAd.adUnitId = "ca-app-pub-8884790662094305/2457116808"
+//        mInterstitialAd.adUnitId = "ca-app-pub-3940256099942544/103317372"
+            mInterstitialAd.loadAd(AdRequest.Builder().build())
+
+            mInterstitialAd.adListener = object : AdListener() {
+
+                override fun onAdLoaded() {
+                    super.onAdLoaded()
+                    mInterstitialAd.show()
+                }
+            }
+        }
+      dataBinding.layoutQuestion.ivHelp.setOnClickListener {
+
+
+          HelpPopupMenuUtil.showPopupMenu(this,dataBinding.layoutQuestion.ivHelp,questionEntity)
+
+        }
+
+
 
         questionEntity = intent.getSerializableExtra(QUESTION) as NoAdminQuestion
         initToolbarSetting(dataBinding.toolbar,questionEntity.title!!)
@@ -44,8 +79,13 @@ class QuestionDetailActivity:BaseDataBindingActivity<ActivityQuestionDetailBindi
             "image"->{
                 dataBinding.layoutQuestion.audioLayout.visibility = View.GONE
                 dataBinding.layoutQuestion.playBtn.visibility = View.GONE
-                GlideApp.with(this).load(AppConstants.URL.FILE_PRE_URL + questionEntity.url)
+                GlideApp.with(this).load(AppConstants.URL.FILE_PRE_URL + questionEntity.url).diskCacheStrategy(
+                    DiskCacheStrategy.ALL)
                     .placeholder(R.drawable.loading).into( dataBinding.layoutQuestion.ivQuestion)
+                dataBinding.layoutQuestion.ivQuestion.setOnClickListener {
+
+                    ShowImageActivity.start(this@QuestionDetailActivity,AppConstants.URL.FILE_PRE_URL + questionEntity.url)
+                }
 
             }
             "audio"->{
@@ -121,8 +161,10 @@ class QuestionDetailActivity:BaseDataBindingActivity<ActivityQuestionDetailBindi
                 if (!questionEntity.hadAnswer) {
                     questionEntity.hadAnswer = true
                     RxBus.get().post(questionEntity)
+                    val loginUserId =  UserDataSource.getLoginUserId(this@QuestionDetailActivity)
+
                     UserDataSource.answerQuestion(
-                       UserDataSource.getLoginUserId(this@QuestionDetailActivity)!!,
+                        loginUserId,
                         questionEntity.id!!,
                         object : DataCallback<String> {
                             override fun onSuccess(data: String) {

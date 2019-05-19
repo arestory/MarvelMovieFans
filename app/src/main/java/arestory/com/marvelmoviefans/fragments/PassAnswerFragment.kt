@@ -63,33 +63,38 @@ class PassAnswerFragment : BaseDataBindingFragment<FragmentPassQuestionsBinding>
 
 
 
-                val arrayList = ArrayList<QuestionPage>()
-                for(i in 0 until data){
-                    if(i!=0&&i%10==0){
-                        val page = QuestionPage()
-                        page.pageIndex=i/10
-                        page.count=10
-                        page.finish = UserDataSource.checkLevelFinish(context!!,UserDataSource.getLoginUserId(context!!),page.pageIndex!!-1)
-                        arrayList.add(page)
+                if(context!=null){
+
+                    val arrayList = ArrayList<QuestionPage>()
+                    for(i in 0 until data){
+                        if(i!=0&&i%10==0){
+                            val page = QuestionPage()
+                            page.pageIndex=i/10
+                            page.count=10
+                            page.finish = UserDataSource.checkLevelFinish(context!!,UserDataSource.getLoginUserId(context!!),page.pageIndex!!-1)
+                            arrayList.add(page)
+                        }
                     }
+                    if(data%10>0){
+                        val theEndPage =  QuestionPage()
+                        theEndPage.pageIndex = arrayList.size+1
+                        theEndPage.count=data%10
+
+                        theEndPage.finish = UserDataSource.checkLevelFinish(context!!,UserDataSource.getLoginUserId(context!!),theEndPage.pageIndex!!-1)
+                        arrayList.add(theEndPage)
+                    }
+
+                    print(arrayList.size)
+                    dataBinding.levelAdapter = LevelAdapter(arrayList)
+                    dataBinding.levelAdapter?.setOnItemClickListener { adapter, view, position ->
+
+
+
+                    }
+                    dataBinding.rvLevel.layoutManager = GridLayoutManager(context,5)
+                    dataBinding.dataContentLayout.showContent()
                 }
-                if(data%10>0){
-                    val theEndPage =  QuestionPage()
-                    theEndPage.pageIndex = arrayList.size+1
-                    theEndPage.count=data%10
-                    theEndPage.finish = UserDataSource.checkLevelFinish(context!!,UserDataSource.getLoginUserId(context!!),theEndPage.pageIndex!!-1)
-                    arrayList.add(theEndPage)
-                }
 
-                print(arrayList.size)
-                dataBinding.levelAdapter = LevelAdapter(arrayList)
-                dataBinding.levelAdapter?.setOnItemClickListener { adapter, view, position ->
-
-
-
-                }
-                dataBinding.rvLevel.layoutManager = GridLayoutManager(context,5)
-                dataBinding.dataContentLayout.showContent()
 
 
             }

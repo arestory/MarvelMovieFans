@@ -12,6 +12,7 @@ import arestory.com.marvelmoviefans.constants.AppConstants
 import arestory.com.marvelmoviefans.databinding.ItemMyQuestionBinding
 import arestory.com.marvelmoviefans.databinding.ItemNotadminQuestionBinding
 import arestory.com.marvelmoviefans.util.GlideCircleTransform
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 
 class NotAdminQuestionAdapter(data:List<NoAdminQuestion>):BaseQAdapter<NoAdminQuestion,ItemNotadminQuestionBinding,MVViewHolder<ItemNotadminQuestionBinding>>(R.layout.item_notadmin_question,data){
 
@@ -24,14 +25,18 @@ class NotAdminQuestionAdapter(data:List<NoAdminQuestion>):BaseQAdapter<NoAdminQu
         val avatar = helper.dataViewBinding.ivAvatar
 
         helper.dataViewBinding.tvCreator.setOnClickListener {
-            UserInfoActivity.startWithAnim(context as Activity,item?.createUserId!!,avatar)
+//            UserInfoActivity.startWithAnim(context as Activity,item?.createUserId!!,avatar)
+            UserInfoActivity.start(context as Activity,item?.createUserId!!)
         }
         avatar.setOnClickListener {
-            UserInfoActivity.startWithAnim(context as Activity,item?.createUserId!!,avatar)
+            UserInfoActivity.start(context as Activity,item?.createUserId!!)
+
+//            UserInfoActivity.startWithAnim(context as Activity,item?.createUserId!!,avatar)
         }
-        GlideApp.with(image).load(AppConstants.URL.FILE_PRE_URL + item?.url)
+
+        GlideApp.with(image).load(AppConstants.URL.FILE_PRE_URL + item?.url).diskCacheStrategy(DiskCacheStrategy.ALL)
             .placeholder(R.drawable.loading).into(image)
-        GlideApp.with(image).load(AppConstants.URL.FILE_PRE_URL + item?.avatar).transform(
+        GlideApp.with(image).load(AppConstants.URL.FILE_PRE_URL + item?.avatar).diskCacheStrategy(DiskCacheStrategy.ALL).transform(
             GlideCircleTransform(1, helper.itemView.context.resources.getColor(R.color.white))
         ) .placeholder(R.drawable.placeholder).into(avatar)
 

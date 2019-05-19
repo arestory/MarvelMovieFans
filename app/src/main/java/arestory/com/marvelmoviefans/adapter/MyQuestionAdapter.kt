@@ -5,6 +5,7 @@ import arestory.com.marvelmoviefans.bean.QuestionEntity
 import arestory.com.marvelmoviefans.common.GlideApp
 import arestory.com.marvelmoviefans.constants.AppConstants
 import arestory.com.marvelmoviefans.databinding.ItemMyQuestionBinding
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 
 class MyQuestionAdapter(data:List<QuestionEntity>):BaseQAdapter<QuestionEntity,ItemMyQuestionBinding,MVViewHolder<ItemMyQuestionBinding>>(R.layout.item_my_question,data){
 
@@ -14,7 +15,7 @@ class MyQuestionAdapter(data:List<QuestionEntity>):BaseQAdapter<QuestionEntity,I
         helper?.dataViewBinding?.question = item
         val image = helper?.dataViewBinding?.ivQuestion!!
 
-        GlideApp.with(image).load(AppConstants.URL.FILE_PRE_URL + item?.url)
+        GlideApp.with(image).load(AppConstants.URL.FILE_PRE_URL + item?.url).diskCacheStrategy(DiskCacheStrategy.ALL)
             .placeholder(R.drawable.loading).into(image)
 
         helper.itemView.setOnClickListener {

@@ -2,3 +2,4 @@
 .gradle
 /captures
 app/build
+app/release/
