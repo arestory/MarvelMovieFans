@@ -18,7 +18,10 @@ public class RxBus {
     }
 
     public void post(Object obj) {
-        mBus.onNext(obj);
+        if(obj!=null){
+
+            mBus.onNext(obj);
+        }
     }
 
     public <T> Flowable<T> toFlowable(Class<T> tClass) {

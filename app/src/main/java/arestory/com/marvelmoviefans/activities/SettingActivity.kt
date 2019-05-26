@@ -48,6 +48,7 @@ class SettingActivity:BaseDataBindingActivity<ActivitySettingBinding>() {
             dataBinding.layoutAdv.visibility=View.GONE
 
         }
+
         dataBinding.layoutAdv.setOnClickListener {
 
             if(loginUserId==null){

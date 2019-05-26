@@ -23,12 +23,12 @@ import com.tencent.bugly.beta.Beta
 
 class MainActivity : BaseDataBindingActivity<ActivityMainBinding>() {
 
-    private lateinit var randomAnswerFragment: RandomAnswerFragment
-    private lateinit var passAnswerFragment: PassAnswerFragment
-    private lateinit var noAdminQuestionFragment: NoAdminQuestionFragment
-    private lateinit var userInfoFragment: UserInfoFragment
+    private  var randomAnswerFragment: RandomAnswerFragment?=null
+    private  var passAnswerFragment: PassAnswerFragment?=null
+    private   var noAdminQuestionFragment: NoAdminQuestionFragment?=null
+    private   var userInfoFragment: UserInfoFragment?=null
     private var lastIndex:Int=0
-    private val fragments = ArrayList<Fragment>()
+    private val fragments = ArrayList<Fragment?>()
     override fun getLayoutId(): Int =R.layout.activity_main
 
     private val fragmentTags = arrayListOf("random","pass","noAdmin","user")
@@ -41,10 +41,22 @@ class MainActivity : BaseDataBindingActivity<ActivityMainBinding>() {
             lastIndex = 0
         }else{
 
-            randomAnswerFragment = supportFragmentManager.findFragmentByTag(fragmentTags[0]) as RandomAnswerFragment
-            passAnswerFragment = supportFragmentManager.findFragmentByTag(fragmentTags[1]) as PassAnswerFragment
-            noAdminQuestionFragment = supportFragmentManager.findFragmentByTag(fragmentTags[2]) as NoAdminQuestionFragment
-            userInfoFragment = supportFragmentManager.findFragmentByTag(fragmentTags[3]) as UserInfoFragment
+            val fragment1 = supportFragmentManager.findFragmentByTag(fragmentTags[0])
+            if( fragment1 is RandomAnswerFragment){
+                randomAnswerFragment = fragment1
+            }
+            val fragment2 = supportFragmentManager.findFragmentByTag(fragmentTags[1])
+            if( fragment2 is PassAnswerFragment){
+                passAnswerFragment = fragment2
+            }
+            val fragment3 = supportFragmentManager.findFragmentByTag(fragmentTags[2])
+            if(fragment3 is NoAdminQuestionFragment){
+                noAdminQuestionFragment = fragment3
+            }
+            val fragment4 = supportFragmentManager.findFragmentByTag(fragmentTags[3])
+            if(fragment4 is UserInfoFragment){
+                userInfoFragment = fragment4
+            }
             lastIndex = savedInstanceState.getInt("lastIndex",0)
         }
         fragments.add(randomAnswerFragment)
@@ -91,12 +103,17 @@ class MainActivity : BaseDataBindingActivity<ActivityMainBinding>() {
 
        val lastFragment = fragments[lastIndex]
        lastIndex = pos
-       ft.hide(lastFragment)
-       if(!currentFragment.isAdded){
-           ft.add(R.id.frameLayout,currentFragment,fragmentTags[pos])
-
+       if(lastFragment!=null){
+           ft.hide(lastFragment)
        }
-       ft.show(currentFragment)
+
+       if(currentFragment!=null){
+           if(!currentFragment.isAdded){
+               ft.add(R.id.frameLayout,currentFragment,fragmentTags[pos])
+           }
+           ft.show(currentFragment)
+       }
+
 
        ft.commitAllowingStateLoss()
 

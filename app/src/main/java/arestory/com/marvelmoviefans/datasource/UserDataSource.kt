@@ -263,7 +263,7 @@ object UserDataSource {
 
         val dis = api.register(body).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                if (it.code == 200) {
+                if (it.code == 200&&it.data!=null) {
                     callback.onSuccess(it.data!!)
                 } else {
                     callback.onFail(it.msg)

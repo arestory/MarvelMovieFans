@@ -181,37 +181,47 @@ class AddQuestionActivity: BaseDataBindingActivity<ActivityAddQuestionBinding>()
             if (!File(AppConstants.LOCAL.IMAGE_CACHE).exists()) {
 
                 File(AppConstants.LOCAL.IMAGE_CACHE).mkdirs()
-
             }
+            val filePath =UriUtil.getRealFilePath(this@AddQuestionActivity, photo)
+           if( filePath!!.endsWith(".gif")){
+               imageFile = File(filePath)
+               dataBinding.ivQuestion.visibility = View.VISIBLE
+               dataBinding.tvAddPhoto.visibility = View.GONE
+               dataBinding.ivQuestion.setOnClickListener {
+                   gotoGallery()
+               }
+               GlideApp.with(this@AddQuestionActivity).load(photo).diskCacheStrategy(DiskCacheStrategy.RESOURCE).into(dataBinding.ivQuestion)
 
-            Luban.with(this@AddQuestionActivity).load(UriUtil.getRealFilePath(this@AddQuestionActivity, photo))
-                .setTargetDir(AppConstants.LOCAL.IMAGE_CACHE)
-                .setCompressListener(object : OnCompressListener {
-                    override fun onSuccess(file: File?) {
-
-
-
-                        imageFile = file
-                        dataBinding.ivQuestion.visibility = View.VISIBLE
-                        dataBinding.tvAddPhoto.visibility = View.GONE
-                        dataBinding.ivQuestion.setOnClickListener {
-                            gotoGallery()
-                        }
-                        GlideApp.with(this@AddQuestionActivity).load(file).diskCacheStrategy(DiskCacheStrategy.RESOURCE).into(dataBinding.ivQuestion)
-
-                    }
-
-                    override fun onError(e: Throwable?) {
-                        ToastUtil.showToast(this@AddQuestionActivity, e?.message)
-
-                    }
-
-                    override fun onStart() {
-
-                    }
+           }else{
+               Luban.with(this@AddQuestionActivity).load(filePath)
+                   .setTargetDir(AppConstants.LOCAL.IMAGE_CACHE)
+                   .setCompressListener(object : OnCompressListener {
+                       override fun onSuccess(file: File?) {
 
 
-                }).launch()
+
+                           imageFile = file
+                           dataBinding.ivQuestion.visibility = View.VISIBLE
+                           dataBinding.tvAddPhoto.visibility = View.GONE
+                           dataBinding.ivQuestion.setOnClickListener {
+                               gotoGallery()
+                           }
+                           GlideApp.with(this@AddQuestionActivity).load(file).diskCacheStrategy(DiskCacheStrategy.RESOURCE).into(dataBinding.ivQuestion)
+
+                       }
+
+                       override fun onError(e: Throwable?) {
+                           ToastUtil.showToast(this@AddQuestionActivity, e?.message)
+
+                       }
+
+                       override fun onStart() {
+
+                       }
+
+
+                   }).launch()
+           }
         }
     }
 

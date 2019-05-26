@@ -15,7 +15,11 @@ class AboutActivity:BaseActivity() {
 
         initToolbarSetting(toolbar)
 
-        tvVersion.text = "v${BuildConfig.VERSION_NAME}"
+        tvVersion.text = if(BuildConfig.DEBUG){
+            "调试版v${BuildConfig.VERSION_NAME}"
+        }else{
+            "v${BuildConfig.VERSION_NAME}"
+        }
     }
 
     companion object {
